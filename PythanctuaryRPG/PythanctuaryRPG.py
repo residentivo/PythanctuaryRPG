@@ -56,8 +56,9 @@ def hasMenu():
 #click 2 keys, the command and enter to accept
 def click(hexKey):
 	ClickKey(hexKey)	
-	ClickKey(DIK_RETURN)
 	time.sleep(1)
+	ClickKey(DIK_RETURN)
+	
 
 #for now, is start game static, driven to get menu
 def startGame():
@@ -90,9 +91,11 @@ def main():
 		print(i+1)
 		time.sleep(1)
 
-	print("------------------------- Start Process-----------------------------")
+	print("------------------------- Start Process -----------------------------")
 
 	startGame()
+
+	print("------------------------- End Process -----------------------------")
 
 	#start process image
 	#while process_img():
