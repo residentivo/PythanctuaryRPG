@@ -73,9 +73,9 @@ def ReleaseKey(hexKeyCode):
     ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
 def ClickKey(hexKeyCode):
-	PressKey(hexKeyCode)
+	PressKey(hexKeyCode)	
 	ReleaseKey(hexKeyCode)
-
+	
 if __name__ == '__main__':
     PressKey(0x11)
     time.sleep(1)

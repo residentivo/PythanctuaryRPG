@@ -11,8 +11,12 @@ src_path = "d:\\Projetos\\PythanctuaryRPG\\PythanctuaryRPG\\OCROut\\"
 pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe'
 
 bbox=(0,40,1300,640)
-screen = None
-imgPointer = None
+#Botton Text
+bT_x = 0 
+bT_y = 540
+bT_w = 1273
+bT_h = 50
+
 
 #read screen for image
 def process_img():    	
@@ -23,10 +27,10 @@ def process_img():
 	if cv2.waitKey(25) & 0xFF == ord('q'):
 		cv2.destroyAllWindows()
 		return False
-	return True
+	return True,screen
 
 
-def get_string():
+def get_string(screen,x,y,w,h):
     # Read image with opencv
     #img = cv2.imread(img_path)
     
@@ -38,16 +42,27 @@ def get_string():
     img = cv2.dilate(screen, kernel, iterations=1)
     img = cv2.erode(img, kernel, iterations=1)
     
+    crop_img = img[y:y+h, x:x+w]
+    #cv2.imshow("cropped", crop_img)
+    	
+	#save as tmp
+    cv2.imwrite(src_path + "cropped.png",crop_img)
+
     # Recognize text with tesseract for python
-    result = pytesseract.image_to_string(img)
+    result = pytesseract.image_to_string(crop_img)
 
     return result
 
 def isWaitEnter():
-	isprocessed = process_img()
+	isprocessed,screen = process_img()
 	
-	texto = get_string()
+	#crop area maybe
 
+	texto = get_string(screen,bT_x,bT_y, bT_w,bT_h)
+	
+	print("parsed" + texto)
+
+	if(texto == 'Press any key to continue...'): return False
 	return isprocessed 
 
 def hasMenu():
@@ -57,8 +72,8 @@ def hasMenu():
 def click(hexKey):
 	ClickKey(hexKey)	
 	time.sleep(1)
-	ClickKey(DIK_RETURN)
-	
+	ClickKey(DIK_RETURN)	
+	time.sleep(1)
 
 #for now, is start game static, driven to get menu
 def startGame():
@@ -69,7 +84,7 @@ def startGame():
 	click(DIK_2)#view perk
 	click(DIK_1)#male
 	click(DIK_3)#medium size
-	ClickKey(DIK_RETURN)#dont have name, please
+	ClickKey(DIK_RETURN)#dont have name, please	
 	time.sleep(1)
 	click(DIK_1)#old potato
 	click(DIK_F)#finalize
@@ -80,10 +95,21 @@ def startGame():
 	click(DIK_1)#Classic Mode
 	click(DIK_A)#No Cinematic - image 16
 
-	while isWaitEnter():
-		#now porcess bottom image until read "Press any key to continue
-		pass
-	pass
+	#now porcess bottom image until read "Press any key to continue..."
+	while isWaitEnter(): pass
+
+	ClickKey(DIK_RETURN)#end Cinematic
+	time.sleep(1)
+	print('WORDEK')
+
+	#image 17
+	#now porcess bottom image until read "Press any key to continue..."
+	while isWaitEnter(): pass 
+	
+	ClickKey(DIK_RETURN)#end Cinematic
+	time.sleep(1)
+	print('WORKED - 17')
+	
 
 
 def main():
